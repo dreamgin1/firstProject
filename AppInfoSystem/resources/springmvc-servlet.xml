@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        <!-- 扫描注解 -->	
+		<context:component-scan base-package="cn.demo"></context:component-scan>
+	<!-- 自动注册处理器映射和处理器适配器 -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--配置静态资源  -->
+    <mvc:resources location="/statics/" mapping="/statics/**"></mvc:resources>
+    <!-- 配置MultipartResolver,用于文件上传,使用spring的CommonsMultipartResolver -->
+      	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+      		<property name="maxUploadSize" value="5000000"></property>
+      		<property name="defaultEncoding" value="UTF-8"></property>
+      	</bean>
+    	<!-- 配置多视图解析器:允许同样的内容数据呈现不同的view -->
+      	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+      		<property name="favorParameter" value="true"></property>
+      		<property name="defaultContentType" value="text/html"></property>
+      		<property name="mediaTypes">
+      			<map>
+      				<entry key="html" value="text/html;charset=UTF-8"></entry>
+      				<entry key="json" value="application/json;charset=UTF-8"></entry>
+      				<entry key="xml" value="application/xml;charset=UTF-8"></entry>
+      			</map>
+      		</property>
+      		<property name="viewResolvers">
+      			<list>
+      				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        				<property name="prefix" value="/WEB-INF/jsp/"></property>
+        				<property name="suffix" value=".jsp"></property>
+       			 	</bean>
+      			</list>
+      		</property>
+      	</bean>
+      	<!-- 配置拦截器 -->
+      	<mvc:interceptors>
+      		<mvc:interceptor>      			
+      			<mvc:mapping path="/**" />
+      			
+      			<bean class="cn.demo.interceptor.SysInterceptor"></bean>
+      		</mvc:interceptor>
+      	</mvc:interceptors>  	 
+</beans>
