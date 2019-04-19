@@ -41,11 +41,11 @@
       		</property>
       	</bean>
       	<!-- 配置拦截器 -->
-      	<mvc:interceptors>
-      		<mvc:interceptor>      			
-      			<mvc:mapping path="/**" />
+      	<!-- <mvc:interceptors>
+      		 <mvc:interceptor>      			
+      			 <mvc:mapping path="/**" /> 
       			
       			<bean class="cn.demo.interceptor.SysInterceptor"></bean>
-      		</mvc:interceptor>
-      	</mvc:interceptors>  	 
+      		</mvc:interceptor> 
+      	</mvc:interceptors>   -->	 
 </beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.demo.dao.user.DevUserMapper">
+ 	<!-- 登录时查找用户信息 -->
+ 	<select id="login" resultType="DevUser" >
+	select * from dev_user 
+	where devCode=#{devCode} 
+	</select>
+ 	<!-- 查询用户列表 -->
+ 	<select id="getUserList" resultType="DevUser" >
+		select * from dev_user 
+		<trim prefix="where" prefixOverrides="and/or">
+			<if test="devCode !=null">
+			and devCode=#{devCode}
+			</if>
+		</trim>
+		<trim prefix="where" prefixOverrides="and/or">
+			<if test="devName !=null">
+			and devName=#{devName}
+			</if>
+		</trim>
+	</select>
+</mapper>

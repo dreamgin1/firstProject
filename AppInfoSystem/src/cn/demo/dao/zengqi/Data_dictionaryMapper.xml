@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.demo.dao.zengqi.Data_dictionaryMapper">
+<!-- 查询词典列表 -->
+  <select id="getData_dictionaryList" resultType="Data_dictionary" parameterType="Data_dictionary">
+  select * from Data_dictionary
+  </select>
+  <!-- 根据valueid获取对应的所属平台valuename -->
+  <select id="getFNameById" parameterType="Integer" resultType="String">
+  select valueName from data_dictionary where valueId=#{id} and typeCode ='APP_FLATFORM'
+  </select>
+  <!-- 根据valueid获取对应的APP状态valuename -->
+  <select id="getSNameById" parameterType="Integer" resultType="String">
+  select valueName from data_dictionary where valueId=#{id} and typeCode ='APP_STATUS'
+  </select>
+</mapper>

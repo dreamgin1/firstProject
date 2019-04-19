@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.demo.dao.zengqi.App_infoMapper">
+<select id="getApp_infoList" resultType="App_info" parameterType="App_info">
+	select i.*,
+		(select valueName from data_dictionary where valueId=i.flatformId and typeName='所属平台') as flatformName,
+		(select categoryName from app_category where id=i.categoryLevel1) as categoryLevel1Name,
+		(select categoryName from app_category where id=i.categoryLevel2) as categoryLevel2Name,
+		(select categoryName from app_category where id=i.categoryLevel3) as categoryLevel3Name,
+		(select valueName from data_dictionary where valueId=i.status and typeName='APP状态') as statusName,
+		(select versionNo from app_version where id=i.versionId) as versionNo
+		from app_info as i
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="softwareName != null and softwareName != ''">
+				and i.softwareName like CONCAT ('%',#{softwareName},'%')
+			</if>
+			<if test="status != null and status!=0">
+				and i.status = #{status}
+			</if>
+			<if test="flatformId != null and flatformId!=0">
+				and i.flatformId = #{flatformId}
+			</if>
+			<if test="categoryLevel1 != null and categoryLevel1!=0">
+				and i.categoryLevel1 = #{categoryLevel1}
+			</if>
+			<if test="categoryLevel2 != null and categoryLevel2!=0">
+				and i.categoryLevel2 = #{categoryLevel2}
+			</if>
+			<if test="categoryLevel3 != null and categoryLevel3!=0">
+				and i.categoryLevel3 = #{categoryLevel3}
+			</if>		
+		</trim>
+
+
+		
+  	</select>
+		
+  <!-- 添加app -->
+  	<insert id="addInfo" parameterType="App_info">
+  	 insert into app_info(softwareName,APKName,supportROM,interfaceLanguage,
+  	 softwareSize,downloads,flatformId,categoryLevel1,categoryLevel2,categoryLevel3,status,appInfo,logoPicPath)
+  	 values(#{softwareName},#{APKName},#{supportROM},#{interfaceLanguage},#{softwareSize},#{downloads},
+  	 #{flatformId},#{categoryLevel1},#{categoryLevel2},#{categoryLevel3},#{status},#{appInfo},#{logoPicPath})
+  	</insert>
+  	<!-- 删除app -->	
+  	<delete id="deleteApp">
+  	delete from app_info where id=#{id}
+  	</delete>
+  	<!-- 以id查询app详情 -->
+  	<select id="AppViewList" resultType="App_info" parameterType="App_info">
+  		select i.*,
+		(select valueName from data_dictionary where valueId=i.flatformId and typeName='所属平台') as flatformName,
+		(select categoryName from app_category where id=i.categoryLevel1) as categoryLevel1Name,
+		(select categoryName from app_category where id=i.categoryLevel2) as categoryLevel2Name,
+		(select categoryName from app_category where id=i.categoryLevel3) as categoryLevel3Name,
+		(select valueName from data_dictionary where valueId=i.status and typeName='APP状态') as statusName,
+		(select versionNo from app_version where id=i.versionId) as versionNo
+		from app_info as i
+  		where i.id = #{id}
+  	</select>
+  	<!-- 添加用户 -->
+  	<select id="getApp_infoById" resultType="App_info">
+  	 select * from app_info where id=#{id}
+  	</select>
+</mapper>

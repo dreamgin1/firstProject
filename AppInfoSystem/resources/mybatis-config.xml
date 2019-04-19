@@ -3,6 +3,7 @@
 <configuration>
 	<settings>
 		<setting name="lazyLoadingEnabled" value="false"/>
+		<setting name="autoMappingBehavior" value="FULL"/>
 	</settings>
 	<!-- 配置别名 -->
 	<typeAliases>

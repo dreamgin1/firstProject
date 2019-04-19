@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.demo.dao.version.VersionMapper">
+	<!--增加版本  -->
+  	<insert id="add" parameterType="Version">
+  	insert into app_version(appId,versionNo,versionSize,publishStatus,versionInfo,createdBy,creationDate,
+  	downloadLink,apkLocPath,apkFileName) values(#{appId},#{versionNo},#{versionSize},#{publishStatus},
+  	#{versionInfo},#{createdBy},#{creationDate},#{downloadLink},#{apkLocPath},#{apkFileName})
+  	</insert>
+  	<!-- 根据appid获取历史版本列表 -->
+  	<select id="getVersionListByAppId" parameterType="int" resultMap="info_softwareName">
+  		select v.*,i.softwareName,d.valueName
+		from app_version as v,app_info as i,data_dictionary as d
+		where v.appId=i.id 
+		and v.appId=#{id}
+		and d.typeCode='PUBLISH_STATUS'
+		and d.valueId=3
+  	</select>
+  	<resultMap type="Version" id="info_softwareName">
+		<result property="softwareName" column="softwareName"/>
+		<result property="valueName" column="valueName"/>
+  	</resultMap>
+  	<!--修改版本  -->
+  	<update id="modify" parameterType="Version">
+  		update app_version set versionSize=#{versionSize},
+  		versionInfo=#{versionInfo},downloadLink=#{downloadLink},modifyBy=#{modifyBy},modifyDate=now()
+  		where id=#{id}
+  	</update>
+  	<!-- 根据appid获取最新版本 -->
+  	<select id="getVersionByAppId" parameterType="int" resultType="Version">
+  		select * from app_version where appId=#{id} order by creationDate desc limit 1
+  	</select>
+  	<!-- 根据appid删除所有版本信息 -->
+  	<delete id="del">
+  		delete from app_version where appId=#{id}
+  	</delete>
+  	<!-- 根据pageutil查询当前页面的版本列表 -->
+  	<select id="getVersionListByPageUtil" resultType="Version">
+  		select v.*,i.softwareName,d.valueName
+		from app_version as v,app_info as i,data_dictionary as d
+		where v.appId=i.id 
+		and v.appId=#{id}
+		and d.typeCode='PUBLISH_STATUS'
+		and d.valueId=3
+		order by v.creationDate desc 
+  		limit #{pageUtil.pageStart},#{pageUtil.pageSize}
+  	</select>
+  	<!-- 根据appid获取对应的版本数量 -->
+  	<select id="count" parameterType="Integer" resultType="Integer">
+  		select count(1) from app_version where appId=#{id}
+  	</select>
+</mapper>

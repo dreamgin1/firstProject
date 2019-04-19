@@ -16,7 +16,21 @@ public class Version {
 	private Date modifyDate;//修改时间
 	private	String apkLocPath;//apk文件的服务器存储路径
 	private String apkFileName;//上传的apk文件名称
+	private String softwareName;//软件名
+	private String valueName;//发布状态
 	
+	public String getSoftwareName() {
+		return softwareName;
+	}
+	public void setSoftwareName(String softwareName) {
+		this.softwareName = softwareName;
+	}
+	public String getValueName() {
+		return valueName;
+	}
+	public void setValueName(String valueName) {
+		this.valueName = valueName;
+	}
 	public int getId() {
 		return id;
 	}

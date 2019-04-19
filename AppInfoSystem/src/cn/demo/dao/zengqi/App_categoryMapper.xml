@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.demo.dao.zengqi.App_categoryMapper">
+  <select id="getApp_categoryList" resultType="App_category" parameterType="App_category">
+   select * from app_category
+  </select>
+  
+  <select id="getcategoryLevel1" resultType="App_category" parameterType="App_category">
+   select *
+   from app_category 
+   where parentId is null   
+  </select>
+  
+  <select id="getcategoryLevel2" resultType="App_category" parameterType="App_category">
+   select *
+   from app_category
+   where parentId in(select id
+   from app_category 
+   where parentId is null)
+  </select>
+  
+   <select id="getcategoryLevel3" resultType="App_category" parameterType="App_category">
+   select *
+   from app_category
+   where parentId in(select id
+   from app_category
+   where parentId in(select id
+   from app_category 
+   where parentId is null))
+  </select>
+  <!--  根据id获取分类名称-->
+  <select id="getNameById" parameterType="Integer" resultType="String">
+  select  categoryName from app_category where id=#{id}
+  </select>
+</mapper>
